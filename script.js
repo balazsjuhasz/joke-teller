@@ -1,6 +1,11 @@
-import { VoiceRSS } from './voicerss.js';
+import { VoiceRSS, audioElement } from './voicerss.js';
 
 const button = document.getElementById('button');
+
+// Disable/Enable Button
+const toggleButton = () => {
+  button.disabled = !button.disabled;
+};
 
 // Passing Joke to VoiceRSS API
 const tellMe = (joke) => {
@@ -28,11 +33,16 @@ const getJokes = async () => {
     } else {
       joke = data.joke;
     }
+    // Text-to-Speech
     tellMe(joke);
+    // Disable Button
+    toggleButton();
   } catch (error) {
     // Catch Errors Here
     console.log('whoops', error);
   }
 };
 
-getJokes();
+// Event Listeners
+button.addEventListener('click', getJokes);
+audioElement.addEventListener('ended', toggleButton);
